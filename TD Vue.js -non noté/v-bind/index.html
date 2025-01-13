@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation d'hôtel</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <form @submit.prevent="validerReservation">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" v-model="nom" required>
+
+            <label for="email">Email :</label>
+            <input type="email" id="email" v-model="email" required>
+
+            <label for="dateArrivee">Date d'arrivée :</label>
+            <input type="date" id="dateArrivee" v-model="dateArrivee" required>
+
+            <label for="dateDepart">Date de départ :</label>
+            <input type="date" id="dateDepart" v-model="dateDepart" required>
+
+            <button type="submit">Valider la réservation</button>
+        </form>
+
+        <div class="reservation-details" v-if="reservationValidee">
+            <h2>Détails de la réservation</h2>
+            <p>Nom : {{ nom }}</p>
+            <p>Email : {{ email }}</p>
+            <p>Date d'arrivée : {{ dateArrivee }}</p>
+            <p>Date de départ : {{ dateDepart }}</p>
+            <p>Nombre de nuits : {{ nbNuits }}</p>
+            <p>Coût total : {{ nbNuits * tarif }} €</p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1 v-if="isTrue">La condition est vraie</h1>
+        <h1 v-else>La condition est fausse</h1>
+        <button @click="isTrue = !isTrue">Toggle</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

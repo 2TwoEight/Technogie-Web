@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="setLanguage('en')">English</button>
+        <button @click="setLanguage('fr')">Français</button>
+        <button @click="setLanguage('es')">Español</button>
+
+        <p v-if="language === 'en'">Welcome!</p>
+        <p v-if="language === 'fr'">Bienvenue!</p>
+        <p v-if="language === 'es'">¡Bienvenido!</p>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
