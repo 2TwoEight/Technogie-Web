@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/axios@latest"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>SuperPower Matcher</title>
+</head>
+
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <div id="app" class="container mt-4">
+        <h1 class="my-4">SuperPower Matcher</h1>
+        <form @submit.prevent="findHeroes">
+            <div class="form-group">
+                <label for="intelligence">Intelligence</label>
+                <input type="range" id="intelligence" v-model="selectedPowers.intelligence" min="0" max="100">
+                <span>{{ selectedPowers.intelligence }}</span>
+            </div>
+            <div class="form-group">
+                <label for="strength">Force</label>
+                <input type="range" id="strength" v-model="selectedPowers.strength" min="0" max="100">
+                <span>{{ selectedPowers.strength }}</span>
+            </div>
+            <div class="form-group">
+                <label for="speed">Vitesse</label>
+                <input type="range" id="speed" v-model="selectedPowers.speed" min="0" max="100">
+                <span>{{ selectedPowers.speed }}</span>
+            </div>
+            <div class="form-group">
+                <label for="durability">Durabilité</label>
+                <input type="range" id="durability" v-model="selectedPowers.durability" min="0" max="100">
+                <span>{{ selectedPowers.durability }}</span>
+            </div>
+            <div class="form-group">
+                <label for="power">Puissance</label>
+                <input type="range" id="power" v-model="selectedPowers.power" min="0" max="100">
+                <span>{{ selectedPowers.power }}</span>
+            </div>
+            <div class="form-group">
+                <label for="combat">Combat</label>
+                <input type="range" id="combat" v-model="selectedPowers.combat" min="0" max="100">
+                <span>{{ selectedPowers.combat }}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Trouver des super-héros</button>
+        </form>
+
+        <h2 class="my-4">Résultats</h2>
+        <ul class="list-group">
+            <li v-for="hero in matchedHeroes" :key="hero.id" class="list-group-item">
+                <a :href="'detail.html?id=' + hero.id">{{ hero.name }}</a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Charger dynamiquement le contenu de navbar.html
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-placeholder').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading navbar:', error));
+
+            // Créer une instance Vue.js pour le SuperPower Matcher
+            const { createApp } = Vue;
+
+            createApp({
+                data() {
+                    return {
+                        superheros: [],
+                        selectedPowers: {
+                            intelligence: 0,
+                            strength: 0,
+                            speed: 0,
+                            durability: 0,
+                            power: 0,
+                            combat: 0
+                        },
+                        matchedHeroes: []
+                    };
+                },
+                mounted() {
+                    // Charger les données des superhéros
+                    axios.get('https://cdn.jsdelivr.net/gh/rtomczak/superhero-api@0.3.0/api/all.json')
+                        .then(response => {
+                            this.superheros = response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching superheros:', error);
+                        });
+                },
+                methods: {
+                    findHeroes() {
+                        this.matchedHeroes = this.superheros.filter(hero => {
+                            return Object.keys(this.selectedPowers).every(power => {
+                                return hero.powerstats[power] >= this.selectedPowers[power];
+                            });
+                        });
+                    }
+                }
+            }).mount('#app');
+        });
+    </script>
+</body>
+
+</html>

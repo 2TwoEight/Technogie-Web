@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/axios@latest"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Détail du SuperHéros</title>
+</head>
+
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <div id="app" class="container mt-4">
+        <h1 class="my-4" v-if="hero">{{ hero.name }}</h1>
+        <div v-if="hero">
+            <img :src="hero.images.lg" alt="hero.name" class="img-fluid mb-4">
+            <h2>Biographie</h2>
+            <p><strong>Nom complet:</strong> {{ hero.biography.fullName }}</p>
+            <p><strong>Alias:</strong> {{ hero.biography.aliases.join(', ') }}</p>
+            <p><strong>Lieu de naissance:</strong> {{ hero.biography.placeOfBirth }}</p>
+            <p><strong>Première apparition:</strong> {{ hero.biography.firstAppearance }}</p>
+            <p><strong>Éditeur:</strong> {{ hero.biography.publisher }}</p>
+            <p><strong>Alignement:</strong> {{ hero.biography.alignment }}</p>
+
+            <h2>Statistiques de pouvoir</h2>
+            <ul>
+                <li v-for="(value, key) in hero.powerstats" :key="key">{{ key }}: {{ value }}</li>
+            </ul>
+
+            <h2>Apparence</h2>
+            <p><strong>Genre:</strong> {{ hero.appearance.gender }}</p>
+            <p><strong>Race:</strong> {{ hero.appearance.race }}</p>
+            <p><strong>Taille:</strong> {{ hero.appearance.height.join(' / ') }}</p>
+            <p><strong>Poids:</strong> {{ hero.appearance.weight.join(' / ') }}</p>
+            <p><strong>Couleur des yeux:</strong> {{ hero.appearance.eyeColor }}</p>
+            <p><strong>Couleur des cheveux:</strong> {{ hero.appearance.hairColor }}</p>
+
+            <h2>Travail</h2>
+            <p><strong>Occupation:</strong> {{ hero.work.occupation }}</p>
+            <p><strong>Base:</strong> {{ hero.work.base }}</p>
+
+            <h2>Connexions</h2>
+            <p><strong>Affiliations de groupe:</strong> {{ hero.connections.groupAffiliation }}</p>
+            <p><strong>Parents:</strong> {{ hero.connections.relatives }}</p>
+        </div>
+        <div v-else>
+            <p>Chargement des détails du super-héros...</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Charger dynamiquement le contenu de navbar.html
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-placeholder').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading navbar:', error));
+
+            // Récupérer l'ID du super-héros à partir de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const heroId = urlParams.get('id');
+
+            // Créer une instance Vue.js pour afficher les détails du super-héros
+            const { createApp } = Vue;
+
+            createApp({
+                data() {
+                    return {
+                        hero: null
+                    };
+                },
+                mounted() {
+                    axios.get('https://cdn.jsdelivr.net/gh/rtomczak/superhero-api@0.3.0/api/id/' + heroId + '.json')
+                        .then(response => {
+                            this.hero = response.data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching hero details:', error);
+                        });
+                }
+            }).mount('#app');
+        });
+    </script>
+</body>
+
+</html>
