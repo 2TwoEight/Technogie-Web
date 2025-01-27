@@ -1,0 +1,39 @@
+/* filepath: /c:/Users/thoma/Documents/S6 Cours/Coding/Technogie Web/typescriptexo/exo4/distFichier/styles.css */
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+th {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+td,
+th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+td {
+    border-radius: 5px;
+}
